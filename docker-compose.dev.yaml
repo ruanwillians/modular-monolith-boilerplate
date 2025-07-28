@@ -7,7 +7,7 @@ services:
     ports:
       - '3001:3001'
     env_file:
-      - ./apps/core-app/.env.stage.development
+      - ./apps/core-app/.env.development
     container_name: core-app
     restart: unless-stopped
     depends_on:
@@ -19,9 +19,11 @@ services:
       dockerfile: ./apps/adapter/Dockerfile
     ports:
       - '3002:3002'
-    environment:
-      - PORT_ADAPTER=3002
+    env_file:
+      - ./apps/core-app/.env.development
     container_name: adapter
+    depends_on:
+      - mongo
     restart: unless-stopped
 
   postgres:
@@ -37,5 +39,19 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  mongo:
+    image: mongo:latest
+    container_name: mongo_db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: mymongodatabase
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
 volumes:
   postgres_data:
+  mongo_data:

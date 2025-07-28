@@ -9,11 +9,15 @@ export class EnvValidationSchema {
   @IsNotEmpty()
   PORT: number;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  JWT_SECRET: number;
+  JWT_SECRET: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  JWT_EXPIRES_IN: number;
+  JWT_EXPIRES_IN: string;
+
+  @IsString()
+  @IsNotEmpty()
+  DATABASE_URL: string;
 }

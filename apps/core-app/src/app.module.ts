@@ -12,7 +12,7 @@ import { DatabaseModule } from './database/database.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: [`.env.stage.${process.env.STAGE}`],
+      envFilePath: [`.env.${process.env.STAGE}`],
       isGlobal: true,
       validate: (config) => {
         const validatedConfig = plainToInstance(EnvValidationSchema, config, {
