@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/core-app/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/core-app/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/core-app",
+  "projects": {
+    "adapter": {
+      "type": "application",
+      "root": "apps/adapter",
+      "entryFile": "main",
+      "sourceRoot": "apps/adapter/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/adapter/tsconfig.app.json"
+      }
+    },
+    "auth": {
+      "type": "library",
+      "root": "libs/auth",
+      "entryFile": "index",
+      "sourceRoot": "libs/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/auth/tsconfig.lib.json"
+      }
+    },
+    "core-app": {
+      "type": "application",
+      "root": "apps/core-app",
+      "entryFile": "main",
+      "sourceRoot": "apps/core-app/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/core-app/tsconfig.app.json"
+      }
+    },
+    "postgres-database": {
+      "type": "library",
+      "root": "libs/postgres-database",
+      "entryFile": "index",
+      "sourceRoot": "libs/postgres-database/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/postgres-database/tsconfig.lib.json"
+      }
+    }
+  }
+}

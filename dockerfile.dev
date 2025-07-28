@@ -1,0 +1,18 @@
+FROM node:22 as builder
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install --only=production --ignore-scripts
+
+FROM node:22-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app /app
+
+COPY . .
+
+RUN npx prisma generate
+
+EXPOSE 3001
+
+CMD ["sh", "-c", "npx prisma generate && npm run start:dev"]

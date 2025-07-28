@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  core-app:
+    build:
+      context: .
+      dockerfile: ./apps/core-app/Dockerfile
+    ports:
+      - '3001:3001'
+    env_file:
+      - ./apps/core-app/.env.stage.development
+    container_name: core-app
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  adapter:
+    build:
+      context: .
+      dockerfile: ./apps/adapter/Dockerfile
+    ports:
+      - '3002:3002'
+    environment:
+      - PORT_ADAPTER=3002
+    container_name: adapter
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
