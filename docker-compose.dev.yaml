@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   core-app:
     build:
@@ -8,6 +7,7 @@ services:
       - '3001:3001'
     env_file:
       - ./apps/core-app/.env.development
+
     container_name: core-app
     restart: unless-stopped
     depends_on:
@@ -20,7 +20,7 @@ services:
     ports:
       - '3002:3002'
     env_file:
-      - ./apps/core-app/.env.development
+      - ./apps/adapter/.env.development
     container_name: adapter
     depends_on:
       - mongo

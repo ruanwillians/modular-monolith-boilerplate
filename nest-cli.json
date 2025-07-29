@@ -28,6 +28,15 @@
         "tsConfigPath": "libs/auth/tsconfig.lib.json"
       }
     },
+    "businesss-exception": {
+      "type": "library",
+      "root": "libs/businesss-exception",
+      "entryFile": "index",
+      "sourceRoot": "libs/businesss-exception/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/businesss-exception/tsconfig.lib.json"
+      }
+    },
     "core-app": {
       "type": "application",
       "root": "apps/core-app",

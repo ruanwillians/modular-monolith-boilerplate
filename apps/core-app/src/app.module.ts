@@ -8,6 +8,7 @@ import { validateSync } from 'class-validator';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule, JwtAuthGuard, RolesGuard } from '@auth/auth';
 import { DatabaseModule } from './database/database.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { DatabaseModule } from './database/database.module';
     }),
     DatabaseModule,
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [
@@ -45,4 +47,4 @@ import { DatabaseModule } from './database/database.module';
     { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
-export class AppModule {}
+export class CoreAppModule {}
