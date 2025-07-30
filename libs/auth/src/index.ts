@@ -1,5 +1,5 @@
 export * from './auth.module';
-export * from './auth.service';
+export * from './service/auth.service';
 export * from './guards/jwt-auth.guard';
 export * from './guards/roles.guard';
 export * from './decorators/public.decorator';
@@ -7,3 +7,4 @@ export * from './decorators/roles.decorator';
 export * from './enums/role.enum';
 export * from './interfaces/jwt-payload.interface';
 export * from './interfaces/user-from-jwt.interface';
+export * from './service/auth.service.interface';

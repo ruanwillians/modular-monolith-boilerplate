@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Request } from '@nestjs/common';
 import { AppService } from './app.service';
-import { AuthService, Public, Role, Roles, UserFromJwt } from '@auth/auth';
+import { AuthService, Public, Role, Roles, IUserFromJwt } from '@auth/auth';
 
 @Controller()
 export class AppController {
@@ -17,7 +17,7 @@ export class AppController {
 
   @Roles(Role.Admin, Role.User)
   @Get('shared')
-  getSharedResource(@Request() req: { user: UserFromJwt }) {
+  getSharedResource(@Request() req: { user: IUserFromJwt }) {
     return {
       message: `This is a shared resource for Admins and Users. Welcome, ${req.user.email}!`,
     };

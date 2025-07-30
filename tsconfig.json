@@ -20,10 +20,8 @@
     "paths": {
       "@auth/auth": ["libs/auth/src"],
       "@auth/auth/*": ["libs/auth/src/*"],
-      "postgres-database/postgres-database": ["libs/postgres-database/src"],
-      "postgres-database/postgres-database/*": ["libs/postgres-database/src/*"],
-      "@app/common": ["libs/common/src"],
-      "@app/common/*": ["libs/common/src/*"]
+      "exceptions/exceptions": ["libs/exceptions/src"],
+      "exceptions/exceptions/*": ["libs/exceptions/src/*"]
     }
   }
 }

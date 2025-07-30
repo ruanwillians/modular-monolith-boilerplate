@@ -99,6 +99,7 @@
     ],
     "moduleNameMapper": {
       "^@auth/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
+      "^exceptions/exceptions(|/.*)$": "<rootDir>/libs/exceptions/src/$1",
       "^postgres-database/postgres-database(|/.*)$": "<rootDir>/libs/postgres-database/src/$1"
     }
   }

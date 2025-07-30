@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AdapterModule } from './adapter.module';
 import { ValidationPipe } from '@nestjs/common';
+import { GlobalExceptionFilter } from 'exceptions/exceptions';
 
 async function bootstrap() {
   const app = await NestFactory.create(AdapterModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
       },
     }),
   );
+  app.useGlobalFilters(new GlobalExceptionFilter());
   await app.listen(3002);
 }
 bootstrap();
