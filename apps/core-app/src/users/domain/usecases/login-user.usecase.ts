@@ -1,5 +1,5 @@
 import { IAuthService, Role } from '@auth/auth';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { LoginUserRequestDto } from '../../http/dto/request/login-user-request.dto';
 import { LoginUserResponseDto } from '../../http/dto/response/login-user-response.dto';
 import { UserEntity } from '../entities/user.entity';
@@ -17,7 +17,7 @@ export class LoginUserUseCase {
     const userRecord = await this.usersRepository.findByEmail(loginDto.email);
 
     if (!userRecord) {
-      throw new UnauthorizedException('Usuário não encontrado');
+      throw new BusinessException('Usuário não encontrado');
     }
 
     const user = new UserEntity(
