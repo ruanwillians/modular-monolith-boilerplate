@@ -7,6 +7,7 @@ import { LoginUserUseCase } from './domain/usecases/login-user.usecase';
 import { CreateUserUseCase } from './domain/usecases/create-user.usecase';
 import { IUsersRepository } from './domain/repositories/users.repository.interface';
 import { FindUserUseCase } from './domain/usecases/find-user.usecase';
+import { RefreshTokenUSerUseCase } from './domain/usecases/refresh-token-user.usecase';
 
 @Module({
   imports: [DatabaseModule, AuthModule],
@@ -15,6 +16,7 @@ import { FindUserUseCase } from './domain/usecases/find-user.usecase';
     LoginUserUseCase,
     CreateUserUseCase,
     FindUserUseCase,
+    RefreshTokenUSerUseCase,
     {
       provide: IUsersRepository,
       useClass: UsersRepositoryImpl,

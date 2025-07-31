@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Get } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get, Request } from '@nestjs/common';
 import { Public, Role, Roles } from '@auth/auth';
 import { LoginUserRequestDto } from './dto/request/login-user-request.dto';
 import { LoginUserUseCase } from '../domain/usecases/login-user.usecase';
@@ -8,6 +8,8 @@ import { LoginUserResponseDto } from './dto/response/login-user-response.dto';
 import { CreateUserResponseDto } from './dto/response/create-user-response.dto';
 import { FindUserResponseDto } from './dto/response/find-user-response.dto';
 import { FindUserUseCase } from '../domain/usecases/find-user.usecase';
+import { RefreshTokenUserRequestDto } from './dto/request/refresh-token-user-request.dto';
+import { RefreshTokenUSerUseCase } from '../domain/usecases/refresh-token-user.usecase';
 
 @Controller('users')
 export class UsersController {
@@ -15,6 +17,7 @@ export class UsersController {
     private readonly loginUserUseCase: LoginUserUseCase,
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly findUserUseCase: FindUserUseCase,
+    private readonly refreshTokenUserUseCase: RefreshTokenUSerUseCase,
   ) {}
 
   @Public()
@@ -23,6 +26,12 @@ export class UsersController {
     @Body() loginUserDto: LoginUserRequestDto,
   ): Promise<LoginUserResponseDto> {
     return this.loginUserUseCase.execute(loginUserDto);
+  }
+
+  @Post('refresh-token')
+  @Public()
+  getSharedResource(@Body() refreshTokenDto: RefreshTokenUserRequestDto) {
+    return this.refreshTokenUserUseCase.execute(refreshTokenDto);
   }
 
   @Public()

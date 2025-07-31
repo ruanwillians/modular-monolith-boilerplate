@@ -75,9 +75,10 @@ describe('LoginUserUseCase', () => {
 
       const loginResponse: LoginUserResponseDto = {
         accessToken: 'some-jwt-token',
+        refreshToken: 'some-refresh-token',
       };
 
-      jest.spyOn(authService, 'login').mockResolvedValue(loginResponse);
+      jest.spyOn(authService, 'login').mockReturnValue(loginResponse);
 
       const result = await useCase.execute(loginDto);
 
@@ -89,7 +90,7 @@ describe('LoginUserUseCase', () => {
         userEntity.passwordHash,
       );
       expect(authService.login).toHaveBeenCalledWith({
-        userId: userEntity.id,
+        sub: userEntity.id,
         email: userEntity.email,
         role: Role.User,
       });

@@ -15,7 +15,7 @@ export class EnvValidationSchema {
 
   @IsString()
   @IsNotEmpty()
-  JWT_EXPIRES_IN: string;
+  JWT_REFRESH_SECRET: string;
 
   @IsString()
   @IsNotEmpty()

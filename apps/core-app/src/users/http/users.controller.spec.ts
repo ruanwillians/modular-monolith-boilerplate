@@ -7,6 +7,7 @@ import { CreateUserUseCase } from '../domain/usecases/create-user.usecase';
 import { FindUserUseCase } from '../domain/usecases/find-user.usecase';
 import { JwtAuthGuard, RolesGuard } from '@auth/auth';
 import { GlobalExceptionFilter } from 'exceptions/exceptions';
+import { RefreshTokenUSerUseCase } from '../domain/usecases/refresh-token-user.usecase';
 
 const mockLoginUserUseCase = {
   execute: jest.fn(),
@@ -20,6 +21,10 @@ const mockFindUserUseCase = {
   execute: jest.fn(),
 };
 
+const mockRefreshTokenUserUseCase = {
+  execute: jest.fn(),
+};
+
 describe('UsersController (Integration)', () => {
   let app: INestApplication;
 
@@ -30,6 +35,10 @@ describe('UsersController (Integration)', () => {
         { provide: LoginUserUseCase, useValue: mockLoginUserUseCase },
         { provide: CreateUserUseCase, useValue: mockCreateUserUseCase },
         { provide: FindUserUseCase, useValue: mockFindUserUseCase },
+        {
+          provide: RefreshTokenUSerUseCase,
+          useValue: mockRefreshTokenUserUseCase,
+        },
       ],
     })
       .overrideGuard(JwtAuthGuard)
