@@ -2,8 +2,8 @@ import { DomainException } from 'exceptions/exceptions';
 
 export class UserEntity {
   readonly id: string;
-  readonly email: string;
-  readonly passwordHash: string;
+  email: string;
+  passwordHash: string;
 
   constructor(id: string, email: string, passwordHash: string) {
     this.id = id;
@@ -17,6 +17,7 @@ export class UserEntity {
         'O novo e-mail não pode ser o mesmo que o atual.',
       );
     }
+    this.email = newEmail;
   }
 
   changePassword(newPasswordHash: string): void {
@@ -25,5 +26,6 @@ export class UserEntity {
         'A nova senha não pode ser a mesma que a atual.',
       );
     }
+    this.passwordHash = newPasswordHash;
   }
 }

@@ -18,7 +18,7 @@ export class CreateUserUseCase {
     email,
     password,
   }: CreateUserRequestDto): Promise<CreateUserResponseDto> {
-    const existingUser = await this.usersRepository.findByEmail(email);
+    const existingUser = await this.usersRepository.findUserByEmail(email);
 
     if (existingUser) {
       throw new BusinessException('Usuário já cadastrado', 409);
@@ -28,7 +28,7 @@ export class CreateUserUseCase {
 
     const userEntity = new UserEntity(randomUUID(), email, passwordHash);
 
-    const createdUser = await this.usersRepository.create(userEntity);
+    const createdUser = await this.usersRepository.createUser(userEntity);
 
     return {
       id: createdUser.id,

@@ -8,7 +8,7 @@ import { ApplicationException } from 'exceptions/exceptions';
 export class UsersRepositoryImpl implements IUsersRepository {
   constructor(private readonly prisma: PostgresDatabaseService) {}
 
-  async findByEmail(email: string): Promise<UserEntity | null> {
+  async findUserByEmail(email: string): Promise<UserEntity | null> {
     try {
       const user = await this.prisma.user.findUnique({
         where: { email },
@@ -27,7 +27,7 @@ export class UsersRepositoryImpl implements IUsersRepository {
     }
   }
 
-  async findById(id: string): Promise<UserEntity | null> {
+  async findUserById(id: string): Promise<UserEntity | null> {
     try {
       const user = await this.prisma.user.findUnique({ where: { id } });
       if (!user) return null;
@@ -41,7 +41,7 @@ export class UsersRepositoryImpl implements IUsersRepository {
     }
   }
 
-  async create(userEntity: UserEntity): Promise<UserEntity> {
+  async createUser(userEntity: UserEntity): Promise<UserEntity> {
     try {
       const user = await this.prisma.user.create({
         data: {

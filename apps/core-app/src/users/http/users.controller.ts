@@ -3,11 +3,11 @@ import { Public, Role, Roles } from '@auth/auth';
 import { LoginUserRequestDto } from './dto/request/login-user-request.dto';
 import { LoginUserUseCase } from '../domain/usecases/login-user.usecase';
 import { CreateUserUseCase } from '../domain/usecases/create-user.usecase';
-import { FindUserUseCase } from '../domain/usecases/find-user.usecase.ts';
 import { CreateUserRequestDto } from './dto/request/create-user-request.dto';
 import { LoginUserResponseDto } from './dto/response/login-user-response.dto';
 import { CreateUserResponseDto } from './dto/response/create-user-response.dto';
 import { FindUserResponseDto } from './dto/response/find-user-response.dto';
+import { FindUserUseCase } from '../domain/usecases/find-user.usecase';
 
 @Controller('users')
 export class UsersController {

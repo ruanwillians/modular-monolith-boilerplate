@@ -6,7 +6,7 @@ import { UsersRepositoryImpl } from './domain/repositories/users.repository.impl
 import { LoginUserUseCase } from './domain/usecases/login-user.usecase';
 import { CreateUserUseCase } from './domain/usecases/create-user.usecase';
 import { IUsersRepository } from './domain/repositories/users.repository.interface';
-import { FindUserUseCase } from './domain/usecases/find-user.usecase.ts';
+import { FindUserUseCase } from './domain/usecases/find-user.usecase';
 
 @Module({
   imports: [DatabaseModule, AuthModule],

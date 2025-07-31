@@ -29,7 +29,10 @@ export default tseslint.config(
       'no-console': ['error', { allow: ['warn', 'error'] }],
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      "@typescript-eslint/unbound-method": "warn",
+      "@typescript-eslint/no-unsafe-member-access": "warn"
+      
     },
   },
 );

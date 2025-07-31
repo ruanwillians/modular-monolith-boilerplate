@@ -2,7 +2,6 @@ import { IAuthService, Role } from '@auth/auth';
 import { Injectable } from '@nestjs/common';
 import { LoginUserRequestDto } from '../../http/dto/request/login-user-request.dto';
 import { LoginUserResponseDto } from '../../http/dto/response/login-user-response.dto';
-import { UserEntity } from '../entities/user.entity';
 import { IUsersRepository } from '../repositories/users.repository.interface';
 import { BusinessException } from 'exceptions/exceptions';
 
@@ -14,17 +13,11 @@ export class LoginUserUseCase {
   ) {}
 
   async execute(loginDto: LoginUserRequestDto): Promise<LoginUserResponseDto> {
-    const userRecord = await this.usersRepository.findByEmail(loginDto.email);
+    const user = await this.usersRepository.findUserByEmail(loginDto.email);
 
-    if (!userRecord) {
+    if (!user) {
       throw new BusinessException('Usuário não encontrado');
     }
-
-    const user = new UserEntity(
-      userRecord.id,
-      userRecord.email,
-      userRecord.passwordHash,
-    );
 
     const isValid = await this.authService.validatePassword(
       loginDto.password,
