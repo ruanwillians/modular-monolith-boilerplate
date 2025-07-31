@@ -1,12 +1,12 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { PostgresDatabaseService } from '../../../database/postgres-database.service';
+import { PrismaDatabaseService } from '../../../database/prisma-database.service';
 import { UserEntity } from '../entities/user.entity';
 import { IUsersRepository } from './users.repository.interface';
 import { ApplicationException } from 'exceptions/exceptions';
 
 @Injectable()
 export class UsersRepositoryImpl implements IUsersRepository {
-  constructor(private readonly prisma: PostgresDatabaseService) {}
+  constructor(private readonly prisma: PrismaDatabaseService) {}
 
   async findUserByEmail(email: string): Promise<UserEntity | null> {
     try {

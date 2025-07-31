@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+  # core-app:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/core-app/Dockerfile
+  #   ports:
+  #     - '3001:3001'
+  #   env_file:
+  #     - ./apps/core-app/.env.development
+  #   container_name: core-app
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - postgres
+  #     - mongo1
+
+  # adapter:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/adapter/Dockerfile
+  #   ports:
+  #     - '3002:3002'
+  #   env_file:
+  #     - ./apps/core-app/.env.development
+  #   container_name: adapter
+  #   depends_on:
+  #     - mongo1
+  #   restart: unless-stopped
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - agro_net
+
+  mongo1:
+    image: mongo:7.0
+    container_name: mongo1
+    restart: always
+    command:
+      [
+        '--replSet',
+        'rs0',
+        '--bind_ip_all',
+        '--keyFile',
+        '/data/keyfile/keyfile',
+      ]
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo1_data:/data/db
+      - shared_keyfile:/data/keyfile
+    networks:
+      - agro_net
+
+  mongo2:
+    image: mongo:7.0
+    container_name: mongo2
+    restart: always
+    command:
+      [
+        '--replSet',
+        'rs0',
+        '--bind_ip_all',
+        '--keyFile',
+        '/data/keyfile/keyfile',
+      ]
+    ports:
+      - '27018:27017'
+    volumes:
+      - mongo2_data:/data/db
+      - shared_keyfile:/data/keyfile
+    networks:
+      - agro_net
+
+  mongo-init:
+    image: mongo:7.0
+    container_name: mongo_init
+    networks:
+      - agro_net
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    volumes:
+      - shared_keyfile:/data/keyfile
+    entrypoint: >
+      bash -c "
+        if [ ! -f /data/keyfile/keyfile ]; then
+          openssl rand -base64 756 > /data/keyfile/keyfile &&
+          chmod 400 /data/keyfile/keyfile &&
+          chown mongodb:mongodb /data/keyfile/keyfile;
+        fi &&
+        until mongosh --host mongo1 --port 27017 --quiet --eval 'db.adminCommand({ ping: 1 })'; do
+          echo 'Waiting for mongo1...'; sleep 2;
+        done &&
+        mongosh --host mongo1 --port 27017 --quiet --eval '
+          rs.initiate({
+            _id: \"rs0\",
+            members: [
+              { _id: 0, host: \"mongo1:27017\", priority: 2 },
+              { _id: 1, host: \"mongo2:27017\", priority: 1 },
+              { _id: 2, host: \"mongo3:27017\", priority: 1 }
+            ]
+          });
+          rs.status();
+        ' &&
+        echo \"Replica set initiated.\" &&
+        sleep infinity
+      "
+
+networks:
+  agro_net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  mongo1_data:
+  mongo2_data:
+  mongo3_data:
+  shared_keyfile:

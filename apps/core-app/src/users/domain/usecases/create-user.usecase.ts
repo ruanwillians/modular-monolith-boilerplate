@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
-import { randomUUID } from 'crypto';
 import { CreateUserResponseDto } from '../../http/dto/response/create-user-response.dto';
 import { IAuthService } from '@auth/auth';
 import { IUsersRepository } from '../repositories/users.repository.interface';
 import { BusinessException } from 'exceptions/exceptions';
 import { CreateUserRequestDto } from '../../http/dto/request/create-user-request.dto';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class CreateUserUseCase {
@@ -26,7 +26,11 @@ export class CreateUserUseCase {
 
     const passwordHash = await this.authService.hashPassword(password);
 
-    const userEntity = new UserEntity(randomUUID(), email, passwordHash);
+    const userEntity = new UserEntity(
+      String(new ObjectId()),
+      email,
+      passwordHash,
+    );
 
     const createdUser = await this.usersRepository.createUser(userEntity);
 

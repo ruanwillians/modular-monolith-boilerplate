@@ -1,7 +1,7 @@
 import { DomainException } from 'exceptions/exceptions';
 
 export class UserEntity {
-  readonly id: string;
+  id: string;
   email: string;
   passwordHash: string;
 

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersRepositoryImpl } from './users.repository.impl';
-import { PostgresDatabaseService } from '../../../database/postgres-database.service';
+import { PrismaDatabaseService } from '../../../database/prisma-database.service';
 import { UserEntity } from '../entities/user.entity';
 import { ApplicationException } from 'exceptions/exceptions';
 import { HttpStatus } from '@nestjs/common';
@@ -14,21 +14,21 @@ const mockPrisma = {
 
 describe('UsersRepositoryImpl', () => {
   let repository: UsersRepositoryImpl;
-  let prisma: PostgresDatabaseService;
+  let prisma: PrismaDatabaseService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersRepositoryImpl,
         {
-          provide: PostgresDatabaseService,
+          provide: PrismaDatabaseService,
           useValue: mockPrisma,
         },
       ],
     }).compile();
 
     repository = module.get<UsersRepositoryImpl>(UsersRepositoryImpl);
-    prisma = module.get<PostgresDatabaseService>(PostgresDatabaseService);
+    prisma = module.get<PrismaDatabaseService>(PrismaDatabaseService);
   });
 
   afterEach(() => {
@@ -139,13 +139,15 @@ describe('UsersRepositoryImpl', () => {
         'new@example.com',
         'newHashedPassword',
       );
+
       const createdUserDb = {
-        id: userEntity.id,
+        id: userEntity.id!,
         email: userEntity.email,
         password: userEntity.passwordHash,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
+
       jest.spyOn(prisma.user, 'create').mockResolvedValue(createdUserDb);
 
       const result = await repository.createUser(userEntity);
@@ -157,6 +159,7 @@ describe('UsersRepositoryImpl', () => {
           password: userEntity.passwordHash,
         },
       });
+
       expect(result).toBeInstanceOf(UserEntity);
       expect(result.id).toBe(createdUserDb.id);
       expect(result.email).toBe(createdUserDb.email);

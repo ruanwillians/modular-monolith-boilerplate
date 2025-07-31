@@ -1,8 +1,8 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from '../../../../node_modules/.prisma/postgres-client';
+import { PrismaClient } from '.prisma/agro_api/mongo-client';
 
 @Injectable()
-export class PostgresDatabaseService
+export class PrismaDatabaseService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {

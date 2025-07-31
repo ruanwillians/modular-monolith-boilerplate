@@ -29,7 +29,7 @@ export class LoginUserUseCase {
     }
 
     return this.authService.login({
-      sub: user.id,
+      sub: String(user.id),
       email: user.email,
       role: Role.User,
     });

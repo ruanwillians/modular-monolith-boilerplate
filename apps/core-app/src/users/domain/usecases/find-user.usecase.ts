@@ -16,7 +16,7 @@ export class FindUserUseCase {
     }
 
     return {
-      id: existingUser.id,
+      id: String(existingUser.id),
       email: existingUser.email,
     };
   }
