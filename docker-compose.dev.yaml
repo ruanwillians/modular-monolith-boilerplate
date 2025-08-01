@@ -28,104 +28,48 @@ services:
   #     - mongo1
   #   restart: unless-stopped
 
-  postgres:
-    image: postgres:15
-    container_name: postgres_db
+  mongo-agriinfo-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mongodb-agriInfo-api
     restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     ports:
-      - '5432:5432'
+      - 27017:27017
+    command: --replSet rs0 --keyFile /etc/mongo-keyfile --bind_ip_all --port 27017
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'127.0.0.1:27017'}]}) }" | mongosh --port 27017 -u root -p root --authenticationDatabase admin
+      interval: 5s
+      timeout: 15s
+      start_period: 15s
+      retries: 10
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - agro_net
+      - data1:/data/db
 
-  mongo1:
-    image: mongo:7.0
-    container_name: mongo1
+  mongo-agro-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mongodb-agro-api
     restart: always
-    command:
-      [
-        '--replSet',
-        'rs0',
-        '--bind_ip_all',
-        '--keyFile',
-        '/data/keyfile/keyfile',
-      ]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     ports:
-      - '27017:27017'
+      - 27018:27017
+    command: --replSet rs0 --keyFile /etc/mongo-keyfile --bind_ip_all --port 27017
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'127.0.0.1:27017'}]}) }" | mongosh --port 27017 -u root -p root --authenticationDatabase admin
+      interval: 5s
+      timeout: 15s
+      start_period: 15s
+      retries: 10
     volumes:
-      - mongo1_data:/data/db
-      - shared_keyfile:/data/keyfile
-    networks:
-      - agro_net
-
-  mongo2:
-    image: mongo:7.0
-    container_name: mongo2
-    restart: always
-    command:
-      [
-        '--replSet',
-        'rs0',
-        '--bind_ip_all',
-        '--keyFile',
-        '/data/keyfile/keyfile',
-      ]
-    ports:
-      - '27018:27017'
-    volumes:
-      - mongo2_data:/data/db
-      - shared_keyfile:/data/keyfile
-    networks:
-      - agro_net
-
-  mongo-init:
-    image: mongo:7.0
-    container_name: mongo_init
-    networks:
-      - agro_net
-    depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
-    volumes:
-      - shared_keyfile:/data/keyfile
-    entrypoint: >
-      bash -c "
-        if [ ! -f /data/keyfile/keyfile ]; then
-          openssl rand -base64 756 > /data/keyfile/keyfile &&
-          chmod 400 /data/keyfile/keyfile &&
-          chown mongodb:mongodb /data/keyfile/keyfile;
-        fi &&
-        until mongosh --host mongo1 --port 27017 --quiet --eval 'db.adminCommand({ ping: 1 })'; do
-          echo 'Waiting for mongo1...'; sleep 2;
-        done &&
-        mongosh --host mongo1 --port 27017 --quiet --eval '
-          rs.initiate({
-            _id: \"rs0\",
-            members: [
-              { _id: 0, host: \"mongo1:27017\", priority: 2 },
-              { _id: 1, host: \"mongo2:27017\", priority: 1 },
-              { _id: 2, host: \"mongo3:27017\", priority: 1 }
-            ]
-          });
-          rs.status();
-        ' &&
-        echo \"Replica set initiated.\" &&
-        sleep infinity
-      "
-
-networks:
-  agro_net:
-    driver: bridge
+      - data2:/data/db
 
 volumes:
-  postgres_data:
-  mongo1_data:
-  mongo2_data:
-  mongo3_data:
-  shared_keyfile:
+  data1:
+  data2:

@@ -49,4 +49,4 @@ import { ExceptionsModule } from 'exceptions/exceptions';
     { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
-export class CoreAppModule {}
+export class AgriInfoApiModule {}

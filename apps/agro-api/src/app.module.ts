@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AdapterController } from './adapter.controller';
-import { AdapterService } from './adapter.service';
+import { AdapterController } from './app.controller';
+import { AdapterService } from './app.service';
 import { AuthModule, JwtAuthGuard, RolesGuard } from '@auth/auth';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
@@ -45,4 +45,4 @@ import { DatabaseModule } from './database/database.module';
     { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
-export class AdapterModule {}
+export class AgroApiModule {}

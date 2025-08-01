@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { CoreAppModule } from './app.module';
+import { AgriInfoApiModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { GlobalExceptionFilter } from 'exceptions/exceptions';
 
 async function bootstrap() {
-  const app = await NestFactory.create(CoreAppModule);
+  const app = await NestFactory.create(AgriInfoApiModule);
 
   app.useGlobalPipes(
     new ValidationPipe({

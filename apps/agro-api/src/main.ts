@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AdapterModule } from './adapter.module';
 import { ValidationPipe } from '@nestjs/common';
 import { GlobalExceptionFilter } from 'exceptions/exceptions';
+import { AgroApiModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AdapterModule);
+  const app = await NestFactory.create(AgroApiModule);
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

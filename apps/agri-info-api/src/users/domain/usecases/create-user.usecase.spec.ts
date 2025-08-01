@@ -5,7 +5,7 @@ import { IAuthService } from '@auth/auth';
 import { BusinessException } from 'exceptions/exceptions';
 import { UserEntity } from '../entities/user.entity';
 import { CreateUserRequestDto } from '../../http/dto/request/create-user-request.dto';
-import * as crypto from 'crypto';
+import { ObjectId } from 'bson';
 
 const mockUsersRepository = {
   findUserByEmail: jest.fn(),
@@ -14,9 +14,9 @@ const mockUsersRepository = {
 };
 
 const mockAuthService = {
-  hashPassword: jest.fn(),
   validatePassword: jest.fn(),
   login: jest.fn(),
+  hashPassword: jest.fn(),
 };
 
 describe('CreateUserUseCase', () => {
@@ -58,10 +58,10 @@ describe('CreateUserUseCase', () => {
       password: 'password123',
     };
     const hashedPassword = 'hashedPassword123';
-    const userId = 'ff0413cf-c21e-429a-908c-5dfa52c407b4';
+    const userId = '688c0d204040ce4e00259e18';
 
     beforeEach(() => {
-      jest.spyOn(crypto, 'randomUUID').mockReturnValue(userId);
+      jest.spyOn(ObjectId.prototype, 'toString').mockReturnValue(userId);
     });
 
     it('should create and return a new user successfully', async () => {

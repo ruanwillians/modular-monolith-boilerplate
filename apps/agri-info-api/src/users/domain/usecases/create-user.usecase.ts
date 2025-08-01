@@ -5,8 +5,7 @@ import { IAuthService } from '@auth/auth';
 import { IUsersRepository } from '../repositories/users.repository.interface';
 import { BusinessException } from 'exceptions/exceptions';
 import { CreateUserRequestDto } from '../../http/dto/request/create-user-request.dto';
-import { ObjectId } from 'mongodb';
-
+import { ObjectId } from 'bson';
 @Injectable()
 export class CreateUserUseCase {
   constructor(
@@ -27,7 +26,7 @@ export class CreateUserUseCase {
     const passwordHash = await this.authService.hashPassword(password);
 
     const userEntity = new UserEntity(
-      String(new ObjectId()),
+      new ObjectId().toString(),
       email,
       passwordHash,
     );
